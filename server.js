@@ -44,7 +44,7 @@ app.get('*', (req, res) => {
 function getOpenRouterHeaders() {
   const headers = {
     "Content-Type": "application/json",
-    "HTTP-Referer": process.env.APP_URL || "http://localhost:3000", // Configure no .env!
+    "HTTP-Referer": process.env.APP_URL || "https://chatfuria.onrender.com", // Configure no .env!
     "X-Title": "FURIA Chat"
   };
 
