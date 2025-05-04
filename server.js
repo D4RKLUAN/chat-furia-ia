@@ -42,14 +42,13 @@ app.get('*', (req, res) => {
 });
 
 // Função para headers da OpenRouter (corrigida)
+console.log("🔁 Enviando headers para OpenRouter:", getOpenRouterHeaders());
 function getOpenRouterHeaders() {
   return {
     "Content-Type": "application/json",
+    "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
     "HTTP-Referer": process.env.APP_URL || "https://chatfuria.onrender.com",
-    "X-Title": "FURIA Chat",
-    "Authorization": OPENROUTER_API_KEY 
-      ? `Bearer ${OPENROUTER_API_KEY}` 
-      : "Bearer anonymous"
+    "X-Title": "FURIA Chat"
   };
 }
 
