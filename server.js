@@ -7,7 +7,7 @@ const axios = require('axios');
 // Carregar variáveis do .env de forma explícita
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-console.log("🔑 OPENROUTER_KEY carregada:", process.env.OPENROUTER_KEY);
+console.log("🔑 OPENROUTER_KEY carregada:", process.env.OPENROUTER_KEY ? "SIM" : "NÃO (Modo Free)");
 
 const app = express();
 const server = http.createServer(app);
@@ -18,18 +18,17 @@ const io = new Server(server, {
   }
 });
 
-
-// Configuração OpenRouter (VERIFIQUE SEU .env!)
+// Configuração OpenRouter
 const OPENROUTER_API_KEY = process.env.OPENROUTER_KEY;
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// Modelos disponíveis (com fallback automático)
+// Modelos disponíveis
 const AI_MODELS = {
   FREE: "mistralai/mistral-7b-instruct",
   PAID: "openai/gpt-3.5-turbo"
 };
 
-// Dados dos usuários
+// Armazenar dados dos usuários
 const users = new Map();
 
 // Middleware
@@ -40,32 +39,27 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Função para criar headers CORRETAMENTE
+// Função para headers da OpenRouter (corrigida)
 function getOpenRouterHeaders() {
-  const headers = {
+  return {
     "Content-Type": "application/json",
-    "HTTP-Referer": process.env.APP_URL || "https://chatfuria.onrender.com", // Configure no .env!
-    "X-Title": "FURIA Chat"
+    "HTTP-Referer": process.env.APP_URL || "https://chatfuria.onrender.com",
+    "X-Title": "FURIA Chat",
+    "Authorization": OPENROUTER_API_KEY 
+      ? `Bearer ${OPENROUTER_API_KEY}` 
+      : "Bearer anonymous"
   };
-
-  // Modo anônimo se não tiver chave
-  headers["Authorization"] = OPENROUTER_API_KEY 
-    ? `Bearer ${OPENROUTER_API_KEY}`
-    : "Bearer anonymous";
-
-  return headers;
 }
 
 // Socket.IO
 io.on('connection', (socket) => {
   console.log('Novo usuário conectado');
 
-  // Quando usuário entra no chat
   socket.on('join', (nickname) => {
     const userColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
     users.set(socket.id, { nickname, color: userColor });
-    
-    socket.emit('welcome', `👋 Bem-vindo, ${nickname}! Digite /furia seguido da sua mensagem para tirar suas dúvidas com a IAFuria.`);
+
+    socket.emit('welcome', `👋 Bem-vindo, ${nickname}! Digite /furia "sua mensagem aqui" para tirar sua dúvida com IAFuria.`);
     socket.broadcast.emit('message', {
       nickname: 'Sistema',
       text: `${nickname} entrou no chat!`,
@@ -73,15 +67,13 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Quando recebe mensagem
   socket.on('chatMessage', async (data) => {
     const user = users.get(socket.id);
     if (!user) return;
 
-    // Se for comando /furia
     if (data.text && data.text.startsWith('/furia ')) {
       const pergunta = data.text.slice(7).trim();
-      
+
       try {
         const response = await axios.post(
           OPENROUTER_API_URL,
@@ -101,8 +93,8 @@ io.on('connection', (socket) => {
             temperature: 0.7
           },
           {
-            headers: getOpenRouterHeaders(), // 👈 Usa headers corretos
-            timeout: 5000 // Timeout de 5 segundos
+            headers: getOpenRouterHeaders(),
+            timeout: 10000 // Aumentado para 10 segundos
           }
         );
 
@@ -113,26 +105,31 @@ io.on('connection', (socket) => {
           color: '#FF5722'
         });
       } catch (err) {
-        console.error('Erro OpenRouter:', err.response?.data || err.message);
-        
-        // Fallback para respostas locais
+        console.error('Erro OpenRouter:', {
+          status: err.response?.status,
+          data: err.response?.data,
+          message: err.message
+        });
+
         const fallbackResponses = [
           "A FURIA tá em chamas! 🔥 Lineup: arT, KSCERATO, yuurih, FalleN e chelo!",
           "Último título: ESL Pro League S17 em 2023! 🏆",
           "Próximo jogo? Confira com /proximojogo",
-          "FURIA Style: Jogada agressiva e muita raça! 💪"
+          "FURIA Style: Jogada agressiva e muita raça! 💪",
+          "Problema no servidor, mas o espírito da FURIA continua forte!"
         ];
-        
+
         socket.emit('message', {
           nickname: 'FURIA Bot',
           text: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
           color: '#FF5722'
         });
       }
+
       return;
     }
 
-    // Mensagem normal ou imagem
+    // Mensagem comum
     io.emit('message', {
       nickname: user.nickname,
       text: data.text,
@@ -141,7 +138,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Quando usuário desconecta
   socket.on('disconnect', () => {
     const user = users.get(socket.id);
     if (user) {
@@ -156,8 +152,9 @@ io.on('connection', (socket) => {
 });
 
 // Iniciar servidor
-const PORT = process.env.PORT || 1000;
+const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Modo OpenRouter: ${OPENROUTER_API_KEY ? 'Premium' : 'Free'}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`🤖 Modo OpenRouter: ${OPENROUTER_API_KEY ? 'Premium' : 'Free'}`);
+  console.log(`🔗 URL: ${process.env.APP_URL || `http://localhost:${PORT}`}`);
 });
