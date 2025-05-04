@@ -156,7 +156,7 @@ io.on('connection', (socket) => {
 });
 
 // Iniciar servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 1000;
 server.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   console.log(`Modo OpenRouter: ${OPENROUTER_API_KEY ? 'Premium' : 'Free'}`);
