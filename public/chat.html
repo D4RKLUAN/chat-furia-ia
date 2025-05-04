@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat FURIA</title>
+  <link rel="shortcut icon" href="complementares/furia.gif" type="image/x-icon">
+  <link rel="stylesheet" href="css/StyleChat.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <div class="header-left">
+        <img src="complementares/furia.gif" class="logo small" alt="Logo FURIA" />
+        <h2>FURIA Fans</h2>
+      </div>
+      <button class="exit-btn" onclick="exitChat()">Sair</button>
+    </header>
+
+    <div class="chat-box" id="chat-box"></div>
+
+    <div class="input-area">
+      <textarea id="msg-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+      <input type="file" id="img-input" accept="image/*" style="display: none" />
+      <button onclick="sendMessage()">Enviar</button>
+      
+    </div>
+  </div>
+
+  <audio id="message-sound" src="complementares/Notificação.mp3" preload="auto"></audio>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('msg-input');
+    const imgInput = document.getElementById('img-input');
+    const nickname = localStorage.getItem('nickname') || 'Fã Anônimo';
+    const userColor = generateRandomColor();
+
+    console.log('Entrando no chat com o nickname:', nickname);
+
+    // Ao entrar, envia o nome
+    socket.emit('join', nickname);
+
+    socket.on('message', data => {
+      console.log('Mensagem recebida:', data);
+      const msg = document.createElement('div');
+      msg.className = 'msg ' + (data.nickname === nickname ? 'own' : 'received');
+
+      if (data.image) {
+        msg.innerHTML = `
+          <span class="username" style="color: ${data.color};">${data.nickname}:</span> 
+          <img src="${data.image}" style="max-width: 100%; border-radius: 10px; margin-top: 5px;" />
+        `;
+      } else {
+        msg.innerHTML = `
+          <span class="username" style="color: ${data.color};">${data.nickname}:</span> 
+          ${data.text}
+        `;
+      }
+
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      if (data.nickname !== nickname) {
+        const sound = document.getElementById('message-sound');
+        sound.play();
+      }
+    });
+
+    // Enviar mensagem de texto
+    function sendMessage() {
+      const text = input.value.trim();
+      console.log('Enviando mensagem:', text);
+      if (text !== '') {
+        socket.emit('chatMessage', { nickname, text, color: userColor });
+        input.value = '';  // Limpar o campo de mensagem após o envio
+        input.style.height = 'auto';
+      }
+    }
+
+    // Sair do chat
+    function exitChat() {
+      window.location.href = 'index.html';
+    }
+
+    // Gerar cor aleatória
+    function generateRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Enviar mensagem com Enter
+    input.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Ajustar altura do textarea
+    input.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    // Receber mensagem de boas-vindas
+    socket.on('welcome', text => {
+      console.log('Mensagem de boas-vindas:', text);
+      const msg = document.createElement('div');
+      msg.className = 'msg bot';
+      msg.textContent = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    // Enviar imagem
+    imgInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const base64Image = reader.result;
+          console.log('Enviando imagem...');
+          socket.emit('chatMessage', {
+            nickname,
+            image: base64Image,
+            color: userColor
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

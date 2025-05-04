@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="complementares/furia.gif" type="image/x-icon">
+    <title>Vincular Redes Sociais - FURIA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1.5s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            width: 180px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        
+        .title {
+            font-size: 30px;
+            color: #ffffff;
+            margin: 20px 0;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-item:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            object-fit: contain;
+        }
+
+        .social-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .social-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .social-username {
+            font-size: 14px;
+            color: #a0a0a1;
+            margin-top: 2px;
+        }
+
+        .social-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .status-linked {
+            background-color: rgba(0, 200, 83, 0.2);
+            color: #00c853;
+        }
+
+        .btn-action {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        .btn-action:hover {
+            background-color: #a0a0a1;
+            transform: scale(1.05);
+        }
+
+        .btn-unlink {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .btn-unlink:hover {
+            background-color: rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-finalizar {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-finalizar:hover {
+            background-color: #a0a0a1;
+            transform: scale(1.02);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 200, 83, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background-color: rgba(220, 53, 69, 0.9);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .social-item {
+                flex-wrap: wrap;
+                padding: 12px;
+            }
+
+            .social-status {
+                margin: 8px 0;
+                order: 3;
+                width: 100%;
+            }
+
+            .btn-action {
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            .btn-finalizar {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="complementares/furia.gif" alt="FURIA Logo" class="logo">
+  
+
+        <h1 class="title">VINCULAR REDES SOCIAIS</h1>
+        
+        <div class="social-list" id="social-list">
+            <!-- Redes sociais serão carregadas aqui -->
+        </div>
+    </div>
+
+    <button id="finalizar-btn" class="btn-finalizar">FINALIZAR</button>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const socialNetworks = [
+                { id: 'twitter', name: 'Twitter', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/twitter.svg' },
+                { id: 'twitch', name: 'Twitch', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/twitch.svg' },
+                { id: 'youtube', name: 'YouTube', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/youtube.svg' },
+                { id: 'instagram', name: 'Instagram', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/instagram.svg' },
+                { id: 'facebook', name: 'Facebook', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/facebook.svg' },
+                { id: 'steam', name: 'Steam', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/steam.svg' },
+                { id: 'discord', name: 'Discord', icon: 'https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/discord.svg' }
+            ];
+
+            const socialList = document.getElementById('social-list');
+            const notification = document.getElementById('notification');
+            const finalizarBtn = document.getElementById('finalizar-btn');
+            
+            // Carrega contas vinculadas do localStorage
+            let linkedAccounts = JSON.parse(localStorage.getItem('linkedAccounts')) || {};
+
+            // Função para mostrar notificação
+            function showNotification(message, isError = false) {
+                notification.textContent = message;
+                notification.className = isError ? 'notification error show' : 'notification show';
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            // Função para renderizar a lista de redes sociais
+            function renderSocialList() {
+                socialList.innerHTML = '';
+                
+                socialNetworks.forEach(network => {
+                    const account = linkedAccounts[network.id];
+                    const isLinked = !!account;
+                    
+                    const socialItem = document.createElement('div');
+                    socialItem.className = 'social-item';
+                    socialItem.dataset.network = network.id;
+                    
+                    socialItem.innerHTML = `
+                        <img src="${network.icon}" alt="${network.name}" class="social-icon">
+                        <div class="social-info">
+                            <span class="social-name">${network.name}</span>
+                            ${isLinked ? `<span class="social-username">@${account.username}</span>` : ''}
+                        </div>
+                        <span class="social-status ${isLinked ? 'status-linked' : ''}">
+                            ${isLinked ? 'VINCULADO' : 'VINCULAR'}
+                        </span>
+                        <button class="btn-action ${isLinked ? 'btn-unlink' : ''}">
+                            ${isLinked ? 'DESVINCULAR' : 'VINCULAR'}
+                        </button>
+                    `;
+                    
+                    socialList.appendChild(socialItem);
+                });
+            }
+
+            // Função para vincular uma conta
+            function linkAccount(networkId, networkName) {
+                const username = prompt(`Digite seu nome de usuário do ${networkName}:`);
+                
+                if (username && username.trim() !== '') {
+                    linkedAccounts[networkId] = {
+                        username: username.trim(),
+                        linkedAt: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('linkedAccounts', JSON.stringify(linkedAccounts));
+                    renderSocialList();
+                    showNotification(`${networkName} vinculado com sucesso!`);
+                } else if (username !== null) {
+                    showNotification('Por favor, insira um nome de usuário válido.', true);
+                }
+            }
+
+            // Função para desvincular uma conta
+            function unlinkAccount(networkId, networkName) {
+                if (confirm(`Tem certeza que deseja desvincular sua conta do ${networkName}?`)) {
+                    delete linkedAccounts[networkId];
+                    localStorage.setItem('linkedAccounts', JSON.stringify(linkedAccounts));
+                    renderSocialList();
+                    showNotification(`${networkName} desvinculado com sucesso.`);
+                }
+            }
+
+            // Evento de clique nos botões
+            socialList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('btn-action')) {
+                    const item = e.target.closest('.social-item');
+                    const networkId = item.dataset.network;
+                    const network = socialNetworks.find(n => n.id === networkId);
+                    const isLinked = !!linkedAccounts[networkId];
+                    
+                    if (isLinked) {
+                        unlinkAccount(networkId, network.name);
+                    } else {
+                        linkAccount(networkId, network.name);
+                    }
+                }
+            });
+
+            // Evento de clique no botão Finalizar
+            finalizarBtn.addEventListener('click', function() {
+                const linkedCount = Object.keys(linkedAccounts).length;
+                
+                if (linkedCount > 0) {
+                    showNotification(`Perfil salvo com ${linkedCount} rede(s) vinculada(s)!`);
+                    // Redireciona para agradecimento.html após 1.5 segundos
+                    setTimeout(() => {
+                        window.location.href = 'agradecimento.html';
+                    }, 1500);
+                } else {
+                    showNotification('Nenhuma rede social vinculada!', true);
+                }
+            });
+
+            // Renderiza a lista inicial
+            renderSocialList();
+        });
+    </script>
+</body>
+</html>

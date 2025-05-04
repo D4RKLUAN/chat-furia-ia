@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="complementares/furia.gif" type="image/x-icon">
+
+    <title>Obrigado! | FURIA</title>
+    <style>
+        /* Reset de estilos básicos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .thank-you-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo FURIA (exemplo) */
+        .logo {
+            width: 180px;
+            animation: pulse 2s infinite;
+            margin-bottom: 20px;
+        }
+
+        /* Animação de pulsação na logo */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        /* Título */
+        .title {
+            font-size: 30px;
+            color: #ffffff;
+            margin: 20px 0;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* Mensagem de agradecimento */
+        .message {
+            font-size: 16px;
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Contador regressivo */
+        .countdown {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 20px 0;
+}
+
+        /* Botão de voltar */
+        .btn-back {
+            width: 100%;
+            padding: 14px;
+            background-color: #fff;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-back:hover {
+            background-color: #a0a0a1;
+            transform: scale(1.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .thank-you-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .countdown, .btn-back {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <!-- Logo FURIA (substitua pelo seu SVG/PNG) -->
+        <img src="complementares/furia.gif" alt="Logo FURIA" class="logo">
+
+        <h1 class="title">OBRIGADO!</h1>
+        
+        <p class="message">
+            Agradecemos pelo seu cadastro! Estamos analisando seu perfil e em breve 
+            enviaremos promoções exclusivas, feitas sob medida para o seu gosto.
+        </p>
+        
+        <div class="countdown" id="countdown">
+            Redirecionando em: <span id="time">30</span> segundos
+        </div>
+        
+        <a href="index.html" class="btn-back">Voltar agora</a>
+    </div>
+
+    <script>
+        // Contagem regressiva
+        let timeLeft = 30;
+        const countdownElement = document.getElementById('time');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownElement.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

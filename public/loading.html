@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carregando...</title>
+  <link rel="shortcut icon" href="complementares/furia.gif" type="image/x-icon">
+  <link rel="stylesheet" href="css/StyleIndex-loanding.css" />
+</head>
+<body>
+  <div class="loading-container">
+    <img src="complementares/furia.gif" alt="Logo FURIA" class="logo pulse" />
+    <div class="spinner"></div>
+    <p class="loading-text">Carregando chat...</p>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "chat.html";
+    }, 2500);
+  </script>
+</body>
+</html>

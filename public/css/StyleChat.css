@@ -1,0 +1,209 @@
+/* Reset e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Container principal */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 900px;
+  height: 100vh;
+  background-color: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Cabeçalho */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  padding: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo.small {
+  width: 40px;
+  height: 40px;
+}
+
+.chat-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Botão de sair */
+.exit-btn {
+  background: transparent;
+  border: 2px solid #FF0000;
+  color: #FF0000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.exit-btn:hover {
+  background-color: #FF0000;
+  color: #fff;
+}
+
+/* Área do chat */
+.chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #000;
+  border-bottom: 1px solid #333;
+}
+
+/* Mensagens */
+.msg {
+  display: inline-block; /* Exibe como caixa no fluxo do conteúdo */
+  background-color: #333;
+  padding: 10px 14px;
+  margin: 10px;
+  border-radius: 15px 15px 15px 0px;
+  color: #000;
+  max-width: 75%; /* Limita a largura máxima */
+  word-wrap: break-word;
+  line-height: 1.4;
+  align-self: flex-start; /* Default: esquerda */
+  text-align: left;
+}
+
+/* Mensagens do usuário (lado direito) */
+.msg.own {
+  background-color: #fff;
+  align-self: flex-end; /* Alinha à direita */
+  border-radius: 15px 15px 0px 15px;
+  text-align: right;
+}
+
+/* Mensagem recebida */
+.msg.received {
+  background-color: #333;
+  color: white;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* Mensagem do bot */
+.msg.bot {
+  text-align: center;
+  background-color: #444;
+  font-style: italic;
+  color: #888;
+}
+
+/* Nome do usuário */
+.username {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  color: #aaa;
+}
+
+/* Área de input */
+.input-area {
+  display: flex;
+  padding: 15px;
+  background-color: #111;
+  border-top: 1px solid #333;
+  gap: 10px;
+}
+
+.input-area textarea {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background-color: #222;
+  color: #fff;
+  font-size: 16px;
+  resize: none;
+  min-height: 40px;
+}
+
+.input-area button {
+  padding: 10px 20px;
+  background-color: #ffff;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.input-area button:hover {
+  background-color: #a0a0a1;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .chat-header h2 {
+    font-size: 18px;
+  }
+
+  .input-area textarea,
+  .input-area button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-header h2 {
+    font-size: 16px;
+  }
+
+  .input-area textarea,
+  .input-area button {
+    font-size: 12px;
+  }
+}
+
+.username {
+  font-size: 12px;
+  font-weight: 400;
+  display: block;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+/* Container de mensagens (importante para flexbox funcionar corretamente) */
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #000;
+  border-bottom: 1px solid #333;
+}
+
+

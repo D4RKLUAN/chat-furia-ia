@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat FURIA Fã</title>
+  <link rel="shortcut icon" href="complementares/furia.gif" type="image/x-icon">
+  <link rel="stylesheet" href="css/StyleIndex-loanding.css"/>
+</head>
+<body>
+  <div class="entry-container">
+    <img src="complementares/furia.gif" alt="Logo FURIA" class="logo" />
+    <h1 class="title">Bem-vindo ao Chat FURIA</h1>
+    <input type="text" id="nickname" placeholder="Digite seu nickname" />
+    <button onclick="enterChat()">Entrar no Chat</button>
+    <p id="error" class="error"></p>
+
+    <!-- Seção de promoções -->
+    <div class="promo-section">
+      <p class="promo-text">Quer receber promoções especiais?</p>
+      <a href="cadastro.html" class="promo-link">Cadastre-se aqui!</a>
+    </div>
+  </div>
+
+  <script>
+    function enterChat() {
+      const nickname = document.getElementById('nickname').value.trim();
+      const errorMsg = document.getElementById('error');
+
+      const palavrasProibidas = [
+        "merda", "porra", "caralho", "puta", "foda", "buceta", "viado", "fdp",
+        "racista", "preto nojento", "macaco", "nazista", "nazi", "hitler", "arrombado",
+        "desgraça", "desgraca", "retardado", "imbecil", "lixo", "escroto",
+        "terrorista", "assassino", "branco lixo"
+      ];
+
+      const nicknameLower = nickname.toLowerCase();
+      const contemPalavraProibida = palavrasProibidas.some(palavra =>
+        nicknameLower.includes(palavra)
+      );
+
+      if (nickname === "") {
+        errorMsg.textContent = "Por favor, insira um nickname.";
+      } else if (contemPalavraProibida) {
+        errorMsg.textContent = "Nickname contém palavras inadequadas.";
+      } else {
+        errorMsg.textContent = "";
+        localStorage.setItem("nickname", nickname);
+        window.location.href = "loading.html";
+      }
+    }
+  </script>
+</body>
+</html>
