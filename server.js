@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
     const userColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
     users.set(socket.id, { nickname, color: userColor });
     
-    socket.emit('welcome', `👋 Bem-vindo, ${nickname}! Digite /furia "sua mensagem aqui" para tirar sua duvidas com IAFuria.`);
+    socket.emit('welcome', `👋 Bem-vindo, ${nickname}! Digite /furia seguido da sua mensagem para tirar suas dúvidas com a IAFuria.`);
     socket.broadcast.emit('message', {
       nickname: 'Sistema',
       text: `${nickname} entrou no chat!`,
