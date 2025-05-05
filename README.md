@@ -1,229 +1,206 @@
-Documentação do Projeto FURIA Fan Chat
-📌 Visão Geral
-Este projeto é um sistema completo de chat para fãs da FURIA Esports, com funcionalidades de cadastro, validação de documentos via OCR (Tesseract.js), integração com redes sociais e um chat em tempo real usando Socket.io. O sistema também inclui um assistente virtual especializado em informações sobre a FURIA, utilizando a API OpenRouter para respostas baseadas em IA.
+# 🦊 FURIA Fan Chat
 
-🚀 Funcionalidades Principais
-Sistema de Chat em Tempo Real
+Sistema completo de chat para fãs da FURIA Esports com recursos de cadastro inteligente, validação de documentos via OCR, integração com redes sociais e interação em tempo real.
 
-Chat com Socket.io
+---
 
-Envio de mensagens e imagens
+## 📌 Visão Geral
 
-Comandos especiais para interação com IA
+O **FURIA Fan Chat** é uma aplicação web interativa desenvolvida para engajar fãs da equipe FURIA Esports. O sistema oferece funcionalidades como:
 
-Cadastro Completo de Usuário
+- Chat em tempo real com envio de mensagens e imagens
+- Validação de documentos com OCR (via Tesseract.js)
+- Integração com redes sociais (Twitter, Twitch, YouTube, etc.)
+- Formulário de cadastro multi-etapas
+- Assistente virtual especializado com IA (OpenRouter API)
 
-Formulário multi-etapas
+---
 
-Validação de CPF, e-mail e outros campos
+## 🚀 Funcionalidades Principais
 
-Busca automática de endereço via CEP
+### 💬 Sistema de Chat em Tempo Real
+- Chat usando **Socket.io**
+- Envio de mensagens e **imagens**
+- Comando especial `/furia` para interação com IA
 
-Validação de Documentos com IA
+### 📝 Cadastro Completo de Usuário
+- Formulário dividido em **8 etapas**
+- Validação de **CPF**, e-mail e outros campos
+- Busca de endereço automática via **CEP (ViaCEP)**
 
-OCR com Tesseract.js
+### 📄 Validação de Documentos com IA
+- **OCR** com **Tesseract.js**
+- Comparação de dados do documento com o formulário
+- Algoritmo de similaridade para **nome e CPF**
 
-Comparação de dados do documento com formulário
+### 🌐 Integração com Redes Sociais
+- Vinculação de contas (Twitter, Twitch, YouTube, etc.)
+- Armazenamento local com **localStorage**
 
-Algoritmo de similaridade para nomes e CPF
+### 🤖 Assistente Virtual FURIA
+- Integração com a **API OpenRouter**
+- Respostas baseadas em IA sobre a FURIA
+- Fallback para respostas locais quando necessário
 
-Integração com Redes Sociais
+---
 
-Vinculação de contas (Twitter, Twitch, YouTube, etc.)
+## 🛠️ Estrutura do Projeto
 
-Armazenamento no localStorage
-
-Assistente Virtual FURIA
-
-Integração com OpenRouter API
-
-Respostas contextualizadas sobre a FURIA
-
-Fallback para respostas locais
-
-🛠️ Estrutura do Projeto
+```
 furia-fan-chat/
-│
 ├── public/                  # Arquivos estáticos
-│   ├── complementares/      # Imagens e recursos
-│   └── index.html           # Página inicial
-│
-├── server.js                # Servidor Node.js principal
-├── script.js                # Lógica principal do front-end
-│
-├── cadastro.html            # Página de cadastro
-├── chat.html                # Página do chat
-├── teste.html               # Página de vinculação de redes
-├── agradecimento.html       # Página de confirmação
-├── index.html               # Página inicial
-│
-├── .env                     # Variáveis de ambiente (exemplo)
-└── README.md                # Documentação
-🔧 Configuração do Ambiente
-Pré-requisitos
-Node.js (v18+)
+│   └── complementares/     # Imagens e recursos
+├── index.html              # Página inicial
+├── cadastro.html           # Formulário multi-etapas
+├── chat.html               # Interface de chat
+├── teste.html              # Vinculação de redes sociais
+├── agradecimento.html      # Tela de confirmação
+├── script.js               # Lógica do front-end
+├── server.js               # Backend com Node.js e Socket.io
+├── .env                    # Variáveis de ambiente (exemplo)
+└── README.md               # Documentação do projeto
+```
 
-NPM ou Yarn
+---
 
-Conta no OpenRouter (opcional para respostas premium)
+## 🔧 Configuração do Ambiente
 
-Passos para Instalação
-Clone o repositório:
+### ✅ Pré-requisitos
 
-bash
+- Node.js (v18+)
+- NPM ou Yarn
+- Conta na [OpenRouter](https://openrouter.ai) (opcional para IA premium)
+
+### 📥 Instalação
+
+```bash
 git clone https://github.com/seu-usuario/furia-fan-chat.git
 cd furia-fan-chat
-Instale as dependências:
-
-bash
 npm install
-Crie um arquivo .env na raiz do projeto:
+```
 
-env
+### 🔐 Configuração do `.env`
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
 PORT=3000
 OPENROUTER_KEY=sua_chave_aqui
 APP_URL=http://localhost:3000
-Inicie o servidor:
+```
 
-bash
+### ▶️ Inicialização
+
+```bash
 node server.js
-Acesse no navegador:
+```
 
-http://localhost:3000
-🌐 Fluxo do Usuário
-Página Inicial (index.html)
+Acesse: [http://localhost:3000](http://localhost:3000)
 
-Usuário insere nickname
+---
 
-Validação contra palavras ofensivas
+## 🌐 Fluxo do Usuário
 
-Opção para cadastro completo
+1. **Página Inicial (`index.html`)**
+   - Usuário insere nickname
+   - Validação contra palavras ofensivas
+   - Link para cadastro completo
 
-Cadastro (cadastro.html)
+2. **Cadastro (`cadastro.html`)**
+   - Formulário em 8 etapas com validações
+   - Upload de documento e OCR
 
-Formulário em 8 etapas
+3. **Vinculação de Redes (`teste.html`)**
+   - Integração com redes sociais
+   - Armazenamento local
 
-Validação de cada campo
+4. **Chat (`chat.html`)**
+   - Chat em tempo real
+   - Comando `/furia` para perguntas ao bot
+   - Envio de imagens
 
-Upload e validação de documento
+5. **Confirmação (`agradecimento.html`)**
+   - Mensagem de boas-vindas
+   - Redirecionamento automático
 
-Vinculação de Redes (teste.html)
+---
 
-Conexão com redes sociais
+## 🔌 Integrações
 
-Armazenamento no localStorage
+### 🧠 OpenRouter API
 
-Chat (chat.html)
-
-Chat em tempo real
-
-Comando /furia para perguntas ao bot
-
-Envio de imagens
-
-Confirmação (agradecimento.html)
-
-Mensagem final
-
-Redirecionamento automático
-
-🔌 Integrações
-OpenRouter API
-Fornece respostas de IA para perguntas sobre a FURIA
-
-Configuração em server.js:
-
-javascript
+```javascript
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const AI_MODELS = {
   FREE: "mistralai/mistral-7b-instruct",
   PAID: "openai/gpt-3.5-turbo"
 };
-ViaCEP
-Busca automática de endereço por CEP
+```
 
-Implementação em script.js:
+### 🏠 ViaCEP
 
-javascript
+```javascript
 function buscarEndereco(cep) {
   fetch(`https://viacep.com.br/ws/${cep}/json/`)
     .then(response => response.json())
     .then(data => {
       if (!data.erro) {
-        document.getElementById('endereco').value = 
+        document.getElementById('endereco').value =
           `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
       }
     });
 }
+```
 
-Tesseract.js
-OCR para validação de documentos
+### 🔎 Tesseract.js
 
-Configuração em script.js:
-
-javascript
+```javascript
 Tesseract.workerOptions = {
   workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/worker.min.js',
   langPath: 'https://cdn.jsdelivr.net/npm/tesseract.js-data@4',
   corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@4/tesseract-core.wasm.js'
 };
+```
 
-🛡️ Segurança
-Validação de Entrada
+---
 
-Filtro de palavras ofensivas em nicknames
+## 🛡️ Segurança
 
-Validação rigorosa de CPF e e-mail
+- Validação de entradas e filtro de palavras ofensivas
+- Validação rigorosa de CPF e e-mail
+- Dados sensíveis ficam apenas no **localStorage**
+- Sem armazenamento de dados pessoais no servidor
+- CORS configurado para ambientes seguros
 
-Proteção de Dados
+---
 
-Dados sensíveis apenas no localStorage do cliente
+## 📈 Melhorias Futuras
 
-Nenhum dado pessoal é armazenado no servidor
+- 🔐 **Autenticação segura** com OAuth + JWT  
+- 🗃️ **Banco de dados** para armazenar perfis e mensagens  
+- 🚫 **Moderação** de mensagens ofensivas e sistema de denúncias  
+- 💬 **Salas temáticas** e comandos para moderadores
 
-CORS Configurado
+---
 
-Restrito a origens específicas (em produção)
+## 👨‍💻 Contribuição
 
-📈 Melhorias Futuras
-Autenticação Segura
+1. Fork o projeto  
+2. Crie uma branch (`git checkout -b feature/NovaFuncionalidade`)  
+3. Commit suas mudanças (`git commit -m 'Add NovaFuncionalidade'`)  
+4. Push na branch (`git push origin feature/NovaFuncionalidade`)  
+5. Abra um **Pull Request**
 
-Implementar OAuth para redes sociais
+---
 
-Sistema de login com JWT
+## 📄 Licença
 
-Banco de Dados
+Distribuído sob a licença MIT. Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
 
-Armazenar perfis de usuários
+---
 
-Histórico de mensagens
+## ✉️ Contato
 
-Moderação
-
-Filtro de mensagens ofensivas
-
-Sistema de reporte
-
-Features de Chat
-
-Salas temáticas
-
-Comandos moderadores
-
-👨‍💻 Contribuição
-Faça um fork do projeto
-
-Crie uma branch para sua feature (git checkout -b feature/AmazingFeature)
-
-Commit suas mudanças (git commit -m 'Add some AmazingFeature')
-
-Push para a branch (git push origin feature/AmazingFeature)
-
-Abra um Pull Request
-
-📄 Licença
-Distribuído sob a licença MIT. Veja LICENSE para mais informações.
-
-✉️ Contato
-Equipe de Desenvolvimento - luanddlsln075@gmail.com
-linkedin: https://www.linkedin.com/in/luandsr/
+**Desenvolvedor:** Luanzin Gameplay  
+📧 Email: luanddlsln075@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/luandsr/)
